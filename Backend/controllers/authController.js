@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { username, email, password, role } = req.body; // Accept role from the request
 
         // Check if the user already exists
         let user = await User.findOne({ email });
@@ -13,8 +13,8 @@ exports.register = async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Create new user
-        user = new User({ username, email, password });
+        // Create new user with role (default to 'user')
+        user = new User({ username, email, password, role: role || 'user' });
         await user.save();
 
         // Generate JWT token
@@ -22,12 +22,13 @@ exports.register = async (req, res) => {
             expiresIn: '1h',
         });
 
-        res.status(201).json({ token, user: { id: user._id, username, email } });
+        res.status(201).json({ token, user: { id: user._id, username, email, role: user.role } });
     } catch (error) {
-        console.error("Registration error:", error.message); // Log the error message
+        console.error("Registration error:", error.message);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+
 
 exports.login = async (req, res) => {
     try {
