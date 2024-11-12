@@ -3,6 +3,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
+const profileRoutes = require('./routes/profile');
+
 
 // Load environment variables from .env file
 dotenv.config();
@@ -15,8 +17,9 @@ const app = express();
 // Middleware to parse JSON
 app.use(express.json());
 
-// Authentication routes
+// Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes); // Add profile routes
 
 // Define the PORT from environment or default to 5000
 const PORT = process.env.PORT || 5000;
