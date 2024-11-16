@@ -13,6 +13,7 @@ const upcomingMovieRoutes = require('./routes/upcomingMovie');
 const { sendNotifications } = require('./controllers/upcomingMovieController');
 const newsArticleRoutes = require('./routes/newsArticle');
 const discussionRoutes = require('./routes/discussion');
+const adminRoutes = require('./routes/admin');
 const cron = require('node-cron');
 
 dotenv.config();
@@ -31,6 +32,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api/upcoming', upcomingMovieRoutes);
 app.use('/api/news', newsArticleRoutes);
 app.use('/api/discussions', discussionRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Schedule notification job
 cron.schedule('0 8 * * *', async () => {
